@@ -20,7 +20,7 @@ shinyUI(fluidPage(
         #          min = 1,
          #         max = 50,
           #        value = 30),
-      sliderInput("degrees","Move the slider to change the degrees of freedom",min=1,max=30,value=1)
+      sliderInput("degrees","Move the slider to change the degrees of freedom",min=1,max=100,value=1)
     ),
 
     # Show a plot of the generated distribution
