@@ -51,10 +51,10 @@ suppressWarnings(shinyServer(function(input, output) {
     datadf<-data.frame(data)
     bmean=bn*bp
     bsd=sqrt(bn*bp*(1-bp))
-    binhist<-ggplot(datadf,aes(data))+geom_histogram(aes(y=..density..),binwidth=binwidth,fill="#00688B")
-    binhist+stat_function(fun=dnorm,args=list(mean=bmean,sd=bsd),color="black",size=1)+
+    binhist<-ggplot(datadf,aes(data))+geom_histogram(aes(y=..density..),fill="#00688B")
+    suppressWarnings(binhist+stat_function(fun=dnorm,args=list(mean=bmean,sd=bsd),color="black",size=1)+
       labs(x=paste("Counts when n = ",bn," and p = ",bp),y="Frequency")+
-      ggtitle(paste("Binomial Random Variable with mean = np = ",bmean," and st.dev.= sqrt(np(1-p)) = ",round(bsd,3)))
+      ggtitle(paste("Binomial Random Variable with mean = np = ",bmean," and st.dev.= sqrt(np(1-p)) = ",round(bsd,3))))
   })
   
 })

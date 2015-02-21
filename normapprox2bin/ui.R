@@ -21,8 +21,8 @@ shinyUI(fluidPage(
                   value = 30),
       sliderInput("p",
                   "Probability of Success:",
-                  min = 0.001,
-                  max = 0.999,
+                  min = 0.01,
+                  max = 0.99,
                   value = 0.5)
       
     ),
