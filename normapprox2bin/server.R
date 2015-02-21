@@ -23,15 +23,6 @@ suppressWarnings(shinyServer(function(input, output) {
     }}
   
 
-  
-  output$distPlot <- renderPlot({
-    x    <- faithful[, 2]  # Old Faithful Geyser data
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-  })
-  
   output$normbinPlot<- renderPlot({
     bn<-as.numeric(input$n)
     bp<-as.numeric(input$p)
@@ -51,7 +42,7 @@ suppressWarnings(shinyServer(function(input, output) {
     datadf<-data.frame(data)
     bmean=bn*bp
     bsd=sqrt(bn*bp*(1-bp))
-    binhist<-ggplot(datadf,aes(data))+geom_histogram(aes(y=..density..),fill="#00688B")
+    binhist<-ggplot(datadf,aes(data))+geom_histogram(aes(y=..density..),fill="#00688B",alpha=0.5)
     suppressWarnings(binhist+stat_function(fun=dnorm,args=list(mean=bmean,sd=bsd),color="black",size=1)+
       labs(x=paste("Counts when n = ",bn," and p = ",bp),y="Frequency")+
       ggtitle(paste("Binomial Random Variable with mean = np = ",bmean," and st.dev.= sqrt(np(1-p)) = ",round(bsd,3))))

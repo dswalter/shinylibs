@@ -4,7 +4,7 @@ library(shiny)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Hello Shiny!"),
+  titlePanel("The normal approximation to the binomial."),
   
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
@@ -12,7 +12,7 @@ shinyUI(fluidPage(
       sliderInput("n",
                   "Number of Experiments:",
                   min = 1,
-                  max = 1000,
+                  max = 750,
                   value = 30),
       sliderInput("p",
                   "Probability of Success:",
