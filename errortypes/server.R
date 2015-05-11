@@ -62,14 +62,14 @@ shinyServer(function(input, output) {
   
 
   
-  output$nullplot1 <-renderPlot({
+  output$changedecision <-renderPlot({
       xmin<-10
       xmax<-20
-      mean<-15
+      nullmean<-15
       sd<-1
       decision_point<-input$decision_point
       rng<-seq(xmin,xmax,0.05)
-      null_vals<-dnorm(x=rng,mean=mean,sd=sd)
+      null_vals<-dnorm(x=rng,mean=nullmean,sd=sd)
       
       #null_vals<-dnorm(x=rng,mean=input$onemean,sd=input$onesdev)
       nulldf<-data.frame(x=rng,null_vals)
@@ -79,40 +79,90 @@ shinyServer(function(input, output) {
       
       nullplot<-ggplot(data=nulldf,aes(x=x))+xlim(xmin,xmax)+
         ylab("Density")+xlab("Possible Lengths")+
-        ggtitle("Null Hypothesis Distribution")+
-        geom_ribbon(data=nulldf,aes(ymin=0,ymax=null_vals),fill="steelblue")+
+        ggtitle("Probability Distribution under the Null Hypothesis")+
+        geom_ribbon(data=nulldf,aes(ymin=0,ymax=null_vals),fill="#238E23")+
         geom_vline(x=decision_point)+
         geom_ribbon(data=type_1_df, aes(ymin=0,
                                         ymax=type1vals),fill="red")
-      nullplot
+      
+      
+      altmean<-13
+      sd<-1
+      decision_point<-input$decision_point
+      rng<-seq(xmin,xmax,0.05)
+      null_vals<-dnorm(x=rng,mean=altmean,sd=sd)
+      
+      #null_vals<-dnorm(x=rng,mean=input$onemean,sd=input$onesdev)
+      nulldf<-data.frame(x=rng,null_vals)
+      nulldf$type1vals<-nulldf$null_vals
+      nulldf$type1vals[nulldf$x>decision_point]<-0
+      type_1_df<-subset(nulldf,x<=decision_point)
+      
+      altplot<-ggplot(data=nulldf,aes(x=x))+xlim(xmin,xmax)+
+        ylab("Density")+xlab("Possible Lengths")+
+        ggtitle("Probability Distribution under the Alternate Hypothesis")+
+        geom_ribbon(data=nulldf,aes(ymin=0,ymax=null_vals),fill="#32CD99")+
+        geom_vline(x=decision_point)+
+        geom_ribbon(data=type_1_df, aes(ymin=0,
+                                        ymax=type1vals),fill="steelblue")
+      multiplot(nullplot,altplot)
+      
+      
+  })
+  
+  output$type1 <- renderText({ 
+    firsttext<-"The probability of a type 1 error is the probability of incorrectly rejecting the null.
+    In this case, that is concluding that the bolt is from machine B when it is really from machine A. With
+    a decision point of "
+    secondtext<-", that probability is the area under a Normal(15,1) curve to the left of our decision point,
+    which is "
+    colortext<- "This area is colored darker green in the plots above."
+    cdfval<-round(pnorm(input$decision_point,mean=15,sd=1),3)
+    paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
+  })
+  
+  output$keepnull<-renderText({
+    firsttext<-"Correctly failing to reject the null is the same as concluding that the bolt is from 
+    machine A when it is really from machine A. With a decision point of "
+    secondtext<-", that probability is the area under a Normal(15,1) curve to the right of our decision point, 
+    which is "
+    colortext<- "This area is colored red in the plots above."
+    cdfval<-round(1-pnorm(input$decision_point,mean=15,sd=1),3)
+    paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
+  })
+  
+  output$power<-renderText({
+    firsttext<-"Power is the probability of correctly rejecting the null.
+    In this case, that is concluding that the bolt is from machine B when it is really from machine B. With
+    a decision point of "
+    secondtext<-", that probability is the area under a Normal(13,1) curve to the left of our decision point,
+    which is "
+    colortext<- "This area is colored blue in the plots above."
+    cdfval<-round(pnorm(input$decision_point,mean=13,sd=1),3)
+    paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
+  })
+  
+  output$type2<-renderText({
+    firsttext<-"The probability of a type 2 error is the probability of incorrectly failing to reject the null.
+    In this case, that is concluding that the bolt is from machine A when it is really from machine B. With
+    a decision point of "
+    secondtext<-", that probability is the area under a Normal(13,1) curve to the right of our decision point,
+    which is "
+    colortext<- "This area is colored darker green in the plots above."
+    cdfval<-round(1-pnorm(input$decision_point,mean=13,sd=1),3)
+    paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
   })
   
   
-  output$altplot1 <-renderPlot({
-    xmin<-10
-    xmax<-20
-    mean<-13
-    sd<-1
-    decision_point<-input$decision_point
-    rng<-seq(xmin,xmax,0.05)
-    null_vals<-dnorm(x=rng,mean=mean,sd=sd)
+  output$all_table<-renderTable({
+    input$decision_point<-13
+    type_1<-round(pnorm(input$decision_point,mean=15,sd=1),3)
+    keepnull<-round(1-pnorm(input$decision_point,mean=15,sd=1),3)
+    power<-round(pnorm(input$decision_point,mean=13,sd=1),3)
+    type_2<-round(1-pnorm(input$decision_point,mean=13,sd=1),3)
+    out_matrix<-matrix(c(type_1,keepnull,power,type_2),2,2)
     
-    #null_vals<-dnorm(x=rng,mean=input$onemean,sd=input$onesdev)
-    nulldf<-data.frame(x=rng,null_vals)
-    nulldf$type1vals<-nulldf$null_vals
-    nulldf$type1vals[nulldf$x>decision_point]<-0
-    type_1_df<-subset(nulldf,x<=decision_point)
-    
-    altplot<-ggplot(data=nulldf,aes(x=x))+xlim(xmin,xmax)+
-      ylab("Density")+xlab("Possible Lengths")+
-      ggtitle("Alternate Hypothesis Distribution")+
-      geom_ribbon(data=nulldf,aes(ymin=0,ymax=null_vals),fill="red")+
-      geom_vline(x=decision_point)+
-      geom_ribbon(data=type_1_df, aes(ymin=0,
-                                      ymax=type1vals),fill="steelblue")
-    altplot
   })
-  
   
   
 })

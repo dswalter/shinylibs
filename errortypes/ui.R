@@ -24,16 +24,40 @@ shinyUI(fluidPage(
         error,' or '$\beta$.' Because power and $\beta$ are the only possible outcomes if the
         H_a is true, by rules of probability, power + $\beta$ = 1."),
       p("Let's look at an example."),
-      h4("Bolts"),
+      h3("Bolts"),
+      p("You are in charge of two bolt-making machines at a factory. Since you have been tending to these
+        machines for many years and seen hundreds of thousands of bolts come off the line, you have a pretty
+        good understanding of the probability distributions of bolt width for the two machines. Machine A makes
+        bolts that are normally distributed with a mean of 15 and a standard deviation of 1, or a Normal(15,1)
+        distribution. Machine B makes bolts with a mean of 13 and a standard deviation of 1, or a Normal(13,1)
+        distribution."),
+      p("Sometimes bolts fall of the line, but the two machines are so close to one another, we can't tell
+        which machine the bolt came from. So we have to decide based on length. Let's frame this in terms a 
+        hypothesis test. Our null hypothesis is that the bolt came from Machine A, and the alternative
+        hypothesis is that it came from machine B."),      
+      plotOutput("changedecision"),
       sliderInput("decision_point",
                   "Choose the decision line:",
-                  value = 14,
+                  value = 13.5,
                   min = 12,
                   max = 15,
                   step = 0.05),
-      plotOutput("nullplot1"),
-      plotOutput("altplot1"),
-      p("More text should go here")
+      h3("If the null is true..."),
+      textOutput("type1"),
+      textOutput("keepnull"),
+      h3("If the alternative is true..."),
+      textOutput("power"),
+      textOutput("type2"),
+      h3("In Table Form"),
+      p("A table will eventually go here"),
+      h3("Questions"),
+      p("a. Move the decision line too see how the relative probabilities change. When you move the decision line
+      closer to the mean of Machine A see how does the probability of a type 1 error changes. Does it increase
+or decrease?"),
+      p("b. Find and report the decision point that puts the significance level (or probability of a type 1 error) just under
+        0.05. What's the power for the test using this decision point?"),
+      p("c. For our bolt problem, let's assume the two types of errors are equally bad. What decision point minimizes
+        the total error percentage (calculated by adding the type 1 probability and the type 2 probability?")
       )
       )
       )
