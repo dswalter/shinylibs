@@ -126,7 +126,7 @@ shinyServer(function(input, output) {
     machine A when it is really from machine A. With a decision point of "
     secondtext<-", that probability is the area under a Normal(15,1) curve to the right of our decision point, 
     which is "
-    colortext<- "This area is colored darker green in the plots above."
+    colortext<- "This area is colored green in the plots above."
     cdfval<-round(1-pnorm(input$decision_point,mean=15,sd=1),3)
     paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
   })
@@ -148,7 +148,7 @@ shinyServer(function(input, output) {
     a decision point of "
     secondtext<-", that probability is the area under a Normal(13,1) curve to the right of our decision point,
     which is "
-    colortext<- "This area is colored darker green in the plots above."
+    colortext<- "This area is colored orange in the plots above."
     cdfval<-round(1-pnorm(input$decision_point,mean=13,sd=1),3)
     paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
   })
