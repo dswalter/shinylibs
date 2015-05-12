@@ -9,20 +9,19 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for the number of bins
     # Show a plot of the generated distribution
     mainPanel(
-      
       p("When performing a hypothesis test, there are a number of possible outcomes
         based on our null and alternative hypotheses."),
       p("Let's say we know absolutely that the null hypothesis is true. This would, of course, 
-        make the hypothesis test completely unnecessary. But let's think this through. If $H_0$ 
+        make the hypothesis test completely unnecessary. But let's think this through. If H0 
         is true, and evaluating our data, we reject the null, we have concluded incorrectly. We call this a 
-        'type 1 error.' It is also known as '$\alpha$' or 'significance level.' But if $H_0$ is 
+        'type 1 error.' It is also known as 'alpha' or 'significance level.' But if H0 is 
         true and we fail to reject the null (FTR for short), then we have made the correct decision."),
-      p("On the other hand, if we know absolutely $H_a$ is true, then if we reject the null, 
-        we have come to the correct conclusion. We call this 'power.' But if $H_a$ is true and 
+      p("On the other hand, if we know absolutely Ha is true, then if we reject the null, 
+        we have come to the correct conclusion. We call this 'power.' But if Ha is true and 
         we fail to reject the null, we have again concluded incorrectly. But this is the 
         opposite type of mistake. We call incorrectly failing to reject the null a 'type 2 
-        error,' or '$\beta$.' Because power and $\beta$ are the only possible outcomes if the
-        H_a is true, by rules of probability, power + $\beta$ = 1."),
+        error,' or 'beta.' Because power and beta are the only possible outcomes if the
+        Ha is true, by rules of probability, power + beta = 1."),
       p("Let's look at an example."),
       h3("Bolts"),
       p("You are in charge of two bolt-making machines at a factory. Since you have been tending to these
@@ -49,10 +48,15 @@ shinyUI(fluidPage(
       textOutput("power"),
       textOutput("type2"),
       h3("In Table Form"),
-      p("A table will eventually go here"),
+      p("The table below contains the same information as the previous paragraphs, but in a different format. 
+        The way to read it as follows. Each row represents a different situation. In the first row, the null
+        is true, so the bolt is from machine A. The first column is then the probability of rejecting the null 
+        given that the null is true. The second column is the probability of failing to reject the null when the
+        null is true, etc."),
+      tableOutput('all_table'),
       h3("Questions"),
       p("a. Move the decision line too see how the relative probabilities change. When you move the decision line
-      closer to the mean of Machine A see how does the probability of a type 1 error changes. Does it increase
+      closer to the mean of Machine A, watch how the probability of a type 1 error changes. Does it increase
 or decrease?"),
       p("b. Find and report the decision point that puts the significance level (or probability of a type 1 error) just under
         0.05. What's the power for the test using this decision point?"),

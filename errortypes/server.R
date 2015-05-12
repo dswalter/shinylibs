@@ -101,7 +101,7 @@ shinyServer(function(input, output) {
       altplot<-ggplot(data=nulldf,aes(x=x))+xlim(xmin,xmax)+
         ylab("Density")+xlab("Possible Lengths")+
         ggtitle("Probability Distribution under the Alternate Hypothesis")+
-        geom_ribbon(data=nulldf,aes(ymin=0,ymax=null_vals),fill="#32CD99")+
+        geom_ribbon(data=nulldf,aes(ymin=0,ymax=null_vals),fill="#FF7F00")+
         geom_vline(x=decision_point)+
         geom_ribbon(data=type_1_df, aes(ymin=0,
                                         ymax=type1vals),fill="steelblue")
@@ -116,7 +116,7 @@ shinyServer(function(input, output) {
     a decision point of "
     secondtext<-", that probability is the area under a Normal(15,1) curve to the left of our decision point,
     which is "
-    colortext<- "This area is colored darker green in the plots above."
+    colortext<- "This area is colored red in the plots above."
     cdfval<-round(pnorm(input$decision_point,mean=15,sd=1),3)
     paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
   })
@@ -126,7 +126,7 @@ shinyServer(function(input, output) {
     machine A when it is really from machine A. With a decision point of "
     secondtext<-", that probability is the area under a Normal(15,1) curve to the right of our decision point, 
     which is "
-    colortext<- "This area is colored red in the plots above."
+    colortext<- "This area is colored darker green in the plots above."
     cdfval<-round(1-pnorm(input$decision_point,mean=15,sd=1),3)
     paste(firsttext,input$decision_point,secondtext,cdfval,". ",colortext,sep="")
   })
@@ -155,13 +155,14 @@ shinyServer(function(input, output) {
   
   
   output$all_table<-renderTable({
-    input$decision_point<-13
-    type_1<-round(pnorm(input$decision_point,mean=15,sd=1),3)
+    type_1<-paste("Type 1 = ",round(pnorm(input$decision_point,mean=15,sd=1),3),sep="")
     keepnull<-round(1-pnorm(input$decision_point,mean=15,sd=1),3)
-    power<-round(pnorm(input$decision_point,mean=13,sd=1),3)
-    type_2<-round(1-pnorm(input$decision_point,mean=13,sd=1),3)
-    out_matrix<-matrix(c(type_1,keepnull,power,type_2),2,2)
-    
+    power<-paste("Power = ",round(pnorm(input$decision_point,mean=13,sd=1),3),sep="")
+    type_2<-paste("Type 2 = ",round(1-pnorm(input$decision_point,mean=13,sd=1),3),sep="")
+    out_matrix<-matrix(c(type_1,power,keepnull,type_2),ncol=2,nrow=2)
+    rownames(out_matrix)<-c("Null is True", "Null is not True")
+    colnames(out_matrix)<-c("P(Reject Null)","P(FTR Null)")
+    out_matrix
   })
   
   
