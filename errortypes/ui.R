@@ -55,7 +55,7 @@ shinyUI(fluidPage(
         null is true, etc."),
       tableOutput('all_table'),
       h3("Questions"),
-      p("a. Move the decision line too see how the relative probabilities change. When you move the decision line
+      p("a. Move the decision line to see how the relative probabilities change. When you move the decision line
       closer to the mean of Machine A, watch how the probability of a type 1 error changes. Does it increase
 or decrease?"),
       p("b. Find and report the decision point that puts the significance level (or probability of a type 1 error) just under
